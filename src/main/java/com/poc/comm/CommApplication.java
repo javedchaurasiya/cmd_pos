@@ -15,9 +15,9 @@ public class CommApplication {
 
 	@Bean
 	InfluxDBClient getInfluxDB() {
-		String token = "gz1tKtgJiiDHN4-c1EQoUEvjHc4krVkXukNpAki0fzbe_05vEb812cckgOCNcMSU2Ed7U5gW1DPEmEolmt-flw==";
-		String bucket = "comm";
-		String org = "tekion";
+		String token = "wgwaT1trYu8kuVVOzRikoq5N0tdetXKmGS0aEow1vUHQzT6Q-3WgQiGTtcK2MT0WTpiU7JrLtaP_Ph1VBaaAng==";
+		String bucket = "testTag";
+		String org = "galaxy";
 
 		return InfluxDBClientFactory.create("http://localhost:8086", token.toCharArray(), org, bucket);
 	}

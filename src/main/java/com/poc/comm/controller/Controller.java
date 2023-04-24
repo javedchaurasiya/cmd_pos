@@ -1,6 +1,7 @@
 package com.poc.comm.controller;
 
 import com.poc.comm.beans.Usage;
+import com.poc.comm.models.dto.QuotaDto;
 import com.poc.comm.service.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,8 +23,18 @@ public class Controller {
         return service.add(usage);
     }
 
-    @GetMapping("/get24h/{id}")
-    public String get24h(@PathVariable int id) {
-        return service.get24h(id);
+    @GetMapping("/get24h/{tid}/{did}/{mid}/{type}")
+    public String get24h(@PathVariable int tid, @PathVariable int did, @PathVariable int mid, @PathVariable String type) {
+        return service.get24h(tid, did, mid, type);
+    }
+
+    @PostMapping("/addConfig")
+    public String addLimitConfig(@RequestBody QuotaDto quotaDto) {
+        return service.addLimitConfig(quotaDto);
+    }
+
+    @PostMapping("/sendMail")
+    public String sendMail(@RequestBody QuotaDto quotaDto) {
+        return service.sendMail(quotaDto);
     }
 }
