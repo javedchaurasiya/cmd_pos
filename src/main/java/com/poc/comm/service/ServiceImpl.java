@@ -55,7 +55,7 @@ public class ServiceImpl {
         return "added";
     }
 
-    public String get24h(int tid, int did, int mid, String type) {
+    public Long get24h(int tid, int did, int mid, String type) {
 //        String query = "from(bucket: \"test\") " +
 //                "|> range(start:-24h)" +
 //                "|> filter(fn: (r) => r._measurement == \"usage\" and r._field == \"tenantId\"  and r._value == " + id + ")" +
@@ -81,9 +81,9 @@ public class ServiceImpl {
         stopWatch.stop();
         System.out.println(stopWatch.getTotalTimeMillis());
         if (tables.isEmpty())
-            return "No records";
+            return 0L;
 
-        return Long.toString((Long) tables.get(0).getRecords().get(0).getValue());
+        return (Long) tables.get(0).getRecords().get(0).getValue();
 
     }
 
@@ -101,7 +101,8 @@ public class ServiceImpl {
         return "added";
     }
 
-    public String sendMail(QuotaDto quotaDto) {
+
+    public String checkAndUpdateUsage(QuotaDto quotaDto) {
         Optional<Quota> optionalQuota = quotaRepository.findByTenantIdAndDealerIdAndModuleIdAndType(
                 quotaDto.getTenantId(),
                 quotaDto.getDealerId(),
@@ -112,23 +113,23 @@ public class ServiceImpl {
 
         Quota quota = optionalQuota.get();
 
-        String usageString = get24h(
+        Long usage = get24h(
                 quotaDto.getTenantId(),
                 quotaDto.getDealerId(),
                 quotaDto.getModuleId(),
                 quotaDto.getType());
 
-        int usage = usageString.equals("No records") ? 0 : Integer.parseInt(usageString);
-
         if (usage == quota.getLimit()) return "Limit Exceed";
 
-        double percent = (double) usage * 100 / (double) quota.getLimit();
+        double percentUsage = (double) usage * 100 / (double) quota.getLimit();
 
-        if (percent > (double) 80) {
+        if (percentUsage > (double) 80) {
             //Send Notifications
             System.out.println("Sending Notification");
-            
+
         }
+
+        //update usage table
         add(
                 Usage.builder()
                         .id(5)

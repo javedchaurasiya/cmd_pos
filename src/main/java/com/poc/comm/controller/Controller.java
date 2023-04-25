@@ -24,7 +24,7 @@ public class Controller {
     }
 
     @GetMapping("/get24h/{tid}/{did}/{mid}/{type}")
-    public String get24h(@PathVariable int tid, @PathVariable int did, @PathVariable int mid, @PathVariable String type) {
+    public Long get24h(@PathVariable int tid, @PathVariable int did, @PathVariable int mid, @PathVariable String type) {
         return service.get24h(tid, did, mid, type);
     }
 
@@ -33,8 +33,8 @@ public class Controller {
         return service.addLimitConfig(quotaDto);
     }
 
-    @PostMapping("/sendMail")
-    public String sendMail(@RequestBody QuotaDto quotaDto) {
-        return service.sendMail(quotaDto);
+    @PostMapping("/checkAndUpdateUsage")
+    public String checkAndUpdateUsage(@RequestBody QuotaDto quotaDto) {
+        return service.checkAndUpdateUsage(quotaDto);
     }
 }
